@@ -27,12 +27,8 @@
     }
 
     @keyframes fall {
-      0% {
-        transform: translateY(0) rotate(0deg);
-      }
-      100% {
-        transform: translateY(100vh) rotate(360deg);
-      }
+      0% { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(100vh) rotate(360deg); }
     }
 
     .player {
@@ -40,7 +36,7 @@
       z-index: 10;
       width: 95%;
       max-width: 400px;
-      background: #fff;
+      background: #fdf6e3;
       border-radius: 20px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.2);
       padding: 20px;
@@ -116,55 +112,47 @@
       font-size: 14px;
       background: #6a0dad;
       color: #fff;
+      transition: background 0.2s;
     }
 
     .options button:hover, .options select:hover {
       background: #580b9e;
     }
+
+    /* Loop active state */
+    .loop-active {
+      background: #00ced1 !important;
+      color: #000 !important;
+    }
   </style>
 </head>
 <body>
-  <!-- Flower blossoms animation -->
-  <div id="blossoms"></div>
-
-  <div class="player">
-    <div class="title">📿 Morning Adhkar</div>
-    
-    <div class="progress-container" onclick="setProgress(event)">
-      <div class="progress" id="progress"></div>
-    </div>
-    <div class="time">
-      <span id="currentTime">00:00</span>
-      <span id="duration">00:00</span>
-    </div>
-
-    <div class="controls">
-      <button class="btn" onclick="backward()">⏮</button>
-      <button class="btn" onclick="togglePlay()" id="playBtn">▶️</button>
-      <button class="btn" onclick="forward()">⏭</button>
-    </div>
-
-    <div class="options">
-      <button onclick="toggleLoop()">Loop 🔁</button>
-      <select onchange="changeSpeed(this.value)">
-        <option value="0.5">0.5x</option>
-        <option value="1" selected>1x</option>
-        <option value="1.5">1.5x</option>
-        <option value="2">2x</option>
-      </select>
-      <button onclick="setSleep()">⏱ Sleep</button>
-    </div>
-  </div>
-
-  <audio id="audio" src="song.mp3"></audio>
-
-  <script>
+<!-- Flower blossoms animation -->
+<div id="blossoms"></div>
+<div class="player">
+<div class="title">
+<h1><span style="font-family: 'times new roman', times, serif;"><span style="font-size: 20px;">☀️</span><span style="font-size: 18pt;">Morning Adhkar</span></span></h1>
+<span style="color: #3598db; font-family: georgia, palatino, serif;"><span style="font-size: 14pt;">Shield Your Soul<br /></span><span style="font-size: 14pt;">from</span></span><br /><span style="color: #3598db; font-family: georgia, palatino, serif;"><span style="font-size: 14pt;">Morning to Evening</span></span></div>
+<div class="progress-container" onclick="setProgress(event)">
+<div class="progress" id="progress"></div>
+</div>
+<div class="time"><span id="currentTime">00:00</span> <span id="duration">00:00</span></div>
+<div class="controls"><button class="btn" onclick="backward()">⏮</button> <button class="btn" onclick="togglePlay()" id="playBtn">▶️</button> <button class="btn" onclick="forward()">⏭</button></div>
+<div class="options"><button id="loopBtn" onclick="toggleLoop()">🔁 Loop</button><select onchange="changeSpeed(this.value)">
+<option value="0.5">0.5x</option>
+<option value="1" selected="selected">1x</option>
+<option value="1.5">1.5x</option>
+<option value="2">2x</option>
+</select></div>
+</div>
+<audio id="audio" src="song1.mp3"></audio>
+<script>
     const audio = document.getElementById("audio");
     const playBtn = document.getElementById("playBtn");
     const progress = document.getElementById("progress");
     const currentTimeEl = document.getElementById("currentTime");
     const durationEl = document.getElementById("duration");
-    let sleepTimeout;
+    const loopBtn = document.getElementById("loopBtn");
 
     function togglePlay() {
       if (audio.paused) {
@@ -207,24 +195,11 @@
 
     function toggleLoop() {
       audio.loop = !audio.loop;
-      alert("Loop " + (audio.loop ? "enabled" : "disabled"));
+      loopBtn.classList.toggle("loop-active", audio.loop);
     }
 
     function changeSpeed(val) {
       audio.playbackRate = val;
-    }
-
-    function setSleep() {
-      clearTimeout(sleepTimeout);
-      let minutes = prompt("Enter sleep timer in minutes:");
-      if (minutes > 0) {
-        sleepTimeout = setTimeout(() => {
-          audio.pause();
-          playBtn.textContent = "▶️";
-          alert("Sleep timer ended ⏱");
-        }, minutes * 60000);
-        alert("Sleep timer set for " + minutes + " minutes");
-      }
     }
 
     audio.addEventListener("timeupdate", updateProgress);
