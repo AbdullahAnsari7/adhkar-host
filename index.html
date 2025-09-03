@@ -202,4 +202,45 @@
     }
 
     function forward() {
-      audio.currentTime += 1
+      audio.currentTime += 10;
+    }
+
+    function toggleLoop() {
+      audio.loop = !audio.loop;
+      alert("Loop " + (audio.loop ? "enabled" : "disabled"));
+    }
+
+    function changeSpeed(val) {
+      audio.playbackRate = val;
+    }
+
+    function setSleep() {
+      clearTimeout(sleepTimeout);
+      let minutes = prompt("Enter sleep timer in minutes:");
+      if (minutes > 0) {
+        sleepTimeout = setTimeout(() => {
+          audio.pause();
+          playBtn.textContent = "▶️";
+          alert("Sleep timer ended ⏱");
+        }, minutes * 60000);
+        alert("Sleep timer set for " + minutes + " minutes");
+      }
+    }
+
+    audio.addEventListener("timeupdate", updateProgress);
+    audio.addEventListener("ended", () => playBtn.textContent = "▶️");
+
+    // Create falling blossoms
+    function createBlossom() {
+      const blossom = document.createElement("div");
+      blossom.classList.add("blossom");
+      blossom.innerText = "🌸";
+      blossom.style.left = Math.random() * 100 + "vw";
+      blossom.style.animationDuration = (5 + Math.random() * 5) + "s";
+      document.getElementById("blossoms").appendChild(blossom);
+      setTimeout(() => blossom.remove(), 10000);
+    }
+    setInterval(createBlossom, 800);
+  </script>
+</body>
+</html>
